@@ -46,10 +46,8 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-// Endpoint to generate AI responses and voice
 app.post("/generate-voice", async (req, res) => {
-  console.log("generate-voice");
-  const { userId, text, role } = req.body; // userId to identify the session
+  const { userId, text, role } = req.body;
   console.log("userId", userId);
   console.log("text", text);
 
@@ -101,7 +99,7 @@ Before we begin, could you introduce yourself and tell me a little about your ba
   console.log("userHistory", userHistory);
 
   try {
-    // Generate AI response based on conversation history
+    // Generate AI response
     const chatSession = model.startChat({
       generationConfig,
       history: [...userHistory, { role: "user", parts: [{ text }] }],
@@ -109,19 +107,16 @@ Before we begin, could you introduce yourself and tell me a little about your ba
 
     const result = await chatSession.sendMessage(text);
     let aiResponse = result.response.text();
-    console.log("aiResponse", aiResponse);
-
-    //remove any #@$^&*()~ characters from the response
     aiResponse = aiResponse.replace(/[^a-zA-Z0-9 ]/g, "");
 
-    // Append the AI response to the conversation history
+    // Update conversation history
     userHistories[userId] = [
       ...userHistory,
       { role: "user", parts: [{ text }] },
       { role: "model", parts: [{ text: aiResponse }] },
     ];
 
-    // Generate speech for AI response using ElevenLabs
+    // Generate speech
     const voiceResponse = await axios.post(
       `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
       { text: aiResponse },
@@ -134,11 +129,23 @@ Before we begin, could you introduce yourself and tell me a little about your ba
       }
     );
 
-    res.setHeader("Content-Type", "audio/mpeg");
-    res.send(voiceResponse.data); // Send audio data as response
+    // Send both audio and text response
+    res.set({
+      'Content-Type': 'application/json',
+    });
+    
+    res.send({
+      audio: Buffer.from(voiceResponse.data).toString('base64'),
+      text: aiResponse,
+      success: true
+    });
+
   } catch (error) {
-    console.error("Error generating response or voice:", error);
-    res.status(500).send("Error generating response or voice");
+    console.error("Error:", error);
+    res.status(500).json({
+      success: false,
+      error: "Error generating response or voice"
+    });
   }
 });
 

@@ -12,7 +12,7 @@ const Webcam = () => {
   );
 };
 
-function WebcamFeed() {
+ function WebcamFeed() {
     return (
       <div>
         <h1>Webcam Feed</h1>

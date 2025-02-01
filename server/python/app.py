@@ -4,7 +4,7 @@ import cv2
 import logging
 from datetime import datetime
 from person_and_phone import detect_phone_and_person  # Add this import
-from facemo import detect_emotion
+from facemotion import detect_emotion
 
 
 # Configure logging with timestamps

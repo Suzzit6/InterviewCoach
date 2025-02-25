@@ -15,5 +15,16 @@ export default defineConfig({
         rewrite: path => path.replace(/^\/api/, '')
       },
     },
+    // Add these configurations for ngrok
+    hmr: {
+      clientPort: 443 // Required for ngrok
+    },
+    host: true, // Listen on all available network interfaces
+    allowedHosts: [
+      'localhost',
+      '127.0.0.1',
+      '.ngrok-free.app', // Allow all ngrok-free.app subdomains
+      '.ngrok.io', // Allow all ngrok.io subdomains
+    ],
   },
 });

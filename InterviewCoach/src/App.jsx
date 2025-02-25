@@ -15,20 +15,8 @@ function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <div className="h-screen overflow-hidden">
-      {" "}
-      {/* Added overflow-hidden */}
-      {/* <Router>
-      <Routes>
-        <Route path="/sarthi" element={<Interview />} />
-        <Route path="/webcam" element={<WebcamFeed />} />
-      </Routes>
-    </Router> */}
-      {/* <Interview />
-    <WebcamFeed />
-    <Test /> */}
+    
       <InterviewCoach />
-    </div>
   );
 }
 

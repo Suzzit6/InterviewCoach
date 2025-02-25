@@ -10,7 +10,11 @@ import os
 
 # Add the Proctoring-AI folder to Python path
 proctoring_ai_path = os.path.join(os.path.dirname(__file__), 'Proctoring-AI')
-sys.path.append(proctoring_ai_path)
+if os.path.exists(proctoring_ai_path):
+    sys.path.append(proctoring_ai_path)
+else:
+    logger.error(f"Proctoring-AI directory not found at {proctoring_ai_path}")
+    raise RuntimeError("Required Proctoring-AI directory not found")
 
 from eye_tracker import track_eye
 from mouth_opening_detector import process_frame, get_face_detector, get_landmark_model

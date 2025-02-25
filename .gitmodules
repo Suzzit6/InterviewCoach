@@ -1,0 +1,3 @@
+[submodule "server/python/Proctoring-AI"]
+	path = server/python/Proctoring-AI
+	url = https://github.com/[original-repo-url]/Proctoring-AI.git
